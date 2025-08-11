@@ -1,492 +1,718 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Kaffeekosmos — Blog &amp; Leidenschaft</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Kaffeekosmos — Blog, Shop & Rezepte</title>
+<meta name="description" content="Kaffeekosmos – Blog & Shop für Hobby-Baristas. Rezepte, Produkte, Warenkorb-Simulation, Admin-Panel." />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <!-- Optional: Google Font (falls offline: browser fallback sans-serif) -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fbf8f6; --card:#fff; --muted:#6b6b6b;
+  --accent:#8b5e3c; --accent-2:#d9b48f; --radius:12px;
+  --maxw:1100px; --shadow: 0 8px 30px rgba(16,16,16,0.07);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:linear-gradient(180deg,var(--bg),#fff);color:#222;line-height:1.5}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:22px;}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;gap:12px;align-items:center;text-decoration:none;color:inherit}
+.logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;display:grid;place-items:center;font-weight:700}
+nav{display:flex;gap:12px;align-items:center}
+nav a{color:var(--muted);text-decoration:none;padding:8px 10px;border-radius:10px;font-weight:600}
+nav a:hover{color:var(--accent);background:rgba(139,94,60,0.06)}
+.cta{background:var(--accent);color:white;padding:8px 12px;border-radius:10px;text-decoration:none;font-weight:700}
+.hamburger{display:none;background:none;border:0;font-size:22px}
+.hero{display:grid;grid-template-columns:1fr 420px;gap:20px;align-items:center;margin-top:18px}
+.hero-card{background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.98));padding:22px;border-radius:var(--radius);box-shadow:var(--shadow)}
+p.lead{color:var(--muted);margin:8px 0 14px}
+.pill{background:rgba(139,94,60,0.08);color:var(--accent);padding:8px 12px;border-radius:999px;font-weight:700}
+.preview{border-radius:12px;overflow:hidden;min-height:240px;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.preview .img{flex:1;background-size:cover;background-position:center}
+.preview .meta{padding:12px;background:linear-gradient(180deg,rgba(255,255,255,0.95),rgba(255,255,255,0.9));}
 
-  <meta name="description" content="Kaffeekosmos — ein persönlicher Blog über Bohnen, Zubereitung, Rezepte und kleine Shop-Teaser.">
+/* grid */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px}
+.card{background:var(--card);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.thumb{height:180px;background-size:cover;background-position:center}
+.content{padding:12px;flex:1;display:flex;flex-direction:column;gap:8px}
+.meta-row{display:flex;justify-content:space-between;align-items:center;font-size:0.9rem;color:var(--muted)}
+.tags{display:flex;gap:8px}
+.tag{background:#f3ede9;padding:6px 8px;border-radius:8px;font-weight:600;color:var(--accent);font-size:0.85rem}
 
-  <style>
-    :root{
-      --bg: #fbf8f6;
-      --card: #fff;
-      --muted: #6b6b6b;
-      --accent: #8b5e3c; /* espresso brown */
-      --accent-2: #d9b48f; /* lighter */
-      --radius: 14px;
-      --maxw: 1100px;
-      --glass: rgba(255,255,255,0.6);
-      --shadow: 0 6px 20px rgba(16,16,16,0.08);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      background:linear-gradient(180deg,var(--bg),#fff);
-      color:#222;
-      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      line-height:1.5;
-    }
+/* two-column */
+.two-col{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:26px}
+aside{background:var(--card);padding:14px;border-radius:12px;box-shadow:var(--shadow)}
+.recipe{background:linear-gradient(180deg,#fff,#fff);padding:16px;border-radius:12px;box-shadow:var(--shadow)}
 
-    /* Layout */
-    .wrap{max-width:var(--maxw);margin:0 auto;padding:28px 20px;}
-    header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:6px 0 18px;}
-    .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
-    .logo{
-      width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
-      display:inline-grid;place-items:center;color:white;font-weight:700;font-size:20px;box-shadow:var(--shadow);
-    }
-    nav{display:flex;gap:14px;align-items:center}
-    nav a{color:var(--muted);text-decoration:none;padding:8px 10px;border-radius:10px;font-weight:600}
-    nav a:hover{color:var(--accent);background:rgba(139,94,60,0.06)}
-    .cta{background:var(--accent);color:white;padding:8px 12px;border-radius:10px;text-decoration:none;font-weight:600;box-shadow:0 6px 18px rgba(139,94,60,0.12)}
-    .hamburger{display:none;border:0;background:none;font-size:22px}
+/* shop */
+.shop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.prod-card{background:var(--card);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.prod-thumb{height:180px;background-size:cover;background-position:center}
+.prod-body{padding:12px;flex:1;display:flex;flex-direction:column;gap:10px}
+.price{font-weight:800;color:var(--accent);font-size:1.05rem}
 
-    /* Hero */
-    .hero{
-      display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;margin:18px 0 28px;
-    }
-    .hero-card{
-      background:linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.95));
-      padding:28px;border-radius:var(--radius);box-shadow:var(--shadow);
-    }
-    h1{font-size:clamp(26px,4vw,40px);margin:0 0 10px}
-    p.lead{color:var(--muted);margin:0 0 18px;font-size:1.05rem}
-    .hero-meta{display:flex;gap:10px;flex-wrap:wrap}
-    .pill{background:rgba(139,94,60,0.08);color:var(--accent);padding:8px 12px;border-radius:999px;font-weight:700;font-size:0.9rem}
+/* cart */
+.cart-panel{position:fixed;right:18px;bottom:18px;width:360px;background:var(--card);border-radius:12px;box-shadow:0 30px 60px rgba(0,0,0,0.18);overflow:hidden;z-index:120;display:none}
+.cart-head{padding:12px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center}
+.cart-list{max-height:320px;overflow:auto;padding:12px}
+.cart-row{display:flex;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid #f4f0ee}
+.cart-row img{width:62px;height:48px;object-fit:cover;border-radius:8px}
+.cart-foot{padding:12px;border-top:1px solid #eee;display:flex;flex-direction:column;gap:8px}
 
-    /* Right column preview */
-    .preview{
-      border-radius:12px;overflow:hidden;background:linear-gradient(180deg,#1112 0%, #1110 100%);
-      min-height:260px;box-shadow:var(--shadow);display:flex;flex-direction:column;
-    }
-    .preview .img{flex:1;background-size:cover;background-position:center}
-    .preview .meta{padding:14px;background:linear-gradient(180deg,rgba(255,255,255,0.95),rgba(255,255,255,0.9));}
+/* modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;padding:20px;z-index:200}
+.modal{max-width:900px;width:100%;background:var(--card);border-radius:12px;padding:18px;box-shadow:0 30px 60px rgba(0,0,0,0.25);max-height:90vh;overflow:auto}
+.close{float:right;border:0;background:none;font-size:20px;cursor:pointer}
 
-    /* Grid of posts */
-    .grid{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px;
-    }
-    .card{
-      background:var(--card);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;
-    }
-    .card .thumb{height:170px;background-size:cover;background-position:center}
-    .card .content{padding:14px;flex:1;display:flex;flex-direction:column;gap:10px}
-    .meta-row{display:flex;justify-content:space-between;align-items:center;font-size:0.9rem;color:var(--muted)}
-    .tags{display:flex;gap:8px}
-    .tag{background:#f3ede9;padding:6px 8px;border-radius:8px;font-weight:600;color:var(--accent);font-size:0.85rem}
+/* admin prompt note */
+.admin-note{font-size:13px;color:var(--muted);margin-top:8px}
 
-    /* Recipe / About */
-    .two-col{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-top:26px}
-    aside{background:var(--card);padding:16px;border-radius:12px;box-shadow:var(--shadow)}
-    .recipe{background:linear-gradient(180deg, #fff, #fff);padding:18px;border-radius:12px;box-shadow:var(--shadow)}
+/* footer */
+footer{margin:40px 0 14px;color:var(--muted);text-align:center;font-size:0.95rem}
 
-    /* Footer */
-    footer{margin:44px 0 18px;color:var(--muted);text-align:center;font-size:0.95rem}
+/* utilities */
+.btn{display:inline-block;padding:8px 12px;border-radius:10px;text-decoration:none;font-weight:700}
+.btn-outline{border:1px solid rgba(16,16,16,0.06);background:transparent;color:var(--accent)}
+.center{display:grid;place-items:center}
+.muted{color:var(--muted)}
 
-    /* Modal */
-    .modal-backdrop{position:fixed;inset:0;background:rgba(10,10,10,0.4);display:none;align-items:center;justify-content:center;padding:24px;z-index:80}
-    .modal{max-width:900px;width:100%;background:var(--card);border-radius:12px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,0.25);max-height:90vh;overflow:auto}
-    .modal .close{float:right;border:0;background:none;font-size:20px;padding:6px;cursor:pointer}
-
-    /* Responsive */
-    @media (max-width:980px){
-      .hero{grid-template-columns:1fr}
-      .grid{grid-template-columns:repeat(2,1fr)}
-      .two-col{grid-template-columns:1fr}
-      nav{display:none}
-      .hamburger{display:inline-block}
-    }
-    @media (max-width:640px){
-      .grid{grid-template-columns:1fr}
-      .brand .logo{width:48px;height:48px}
-      .preview{min-height:200px}
-    }
-
-    /* small utilities */
-    .muted{color:var(--muted)}
-    .btn{display:inline-block;padding:8px 12px;border-radius:10px;text-decoration:none;font-weight:600}
-    .btn-outline{border:1px solid rgba(16,16,16,0.06);background:transparent;color:var(--accent)}
-    .center{display:grid;place-items:center}
-    input[type="email"]{width:100%;padding:10px;border-radius:10px;border:1px solid #e6e2df}
-    .subscribe-row{display:flex;gap:8px}
-    .subscribe-row .btn{padding:10px 14px}
-  </style>
+/* responsive */
+@media (max-width:980px){
+  .hero{grid-template-columns:1fr}
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .two-col{grid-template-columns:1fr}
+  nav{display:none}
+  .hamburger{display:inline-block}
+  .shop-grid{grid-template-columns:repeat(2,1fr)}
+  .cart-panel{width:320px;right:12px}
+}
+@media (max-width:640px){
+  .grid{grid-template-columns:1fr}
+  .shop-grid{grid-template-columns:1fr}
+  .logo{width:48px;height:48px}
+  .cart-panel{width:90%;right:6px;left:6px}
+}
+</style>
 </head>
 <body>
+<div class="wrap">
 
-  <div class="wrap">
-    <header>
-      <a class="brand" href="#top">
-        <span class="logo">KK</span>
-        <div>
-          <div style="font-weight:700">Kaffeekosmos</div>
-          <div style="font-size:12px;color:var(--muted)">Blog • Rezepte • Shop-Ideen</div>
-        </div>
-      </a>
+  <!-- HEADER -->
+  <header>
+    <a class="brand" href="#home" id="brandLink">
+      <div class="logo">KK</div>
+      <div>
+        <div style="font-weight:800">Kaffeekosmos</div>
+        <div style="font-size:12px;color:var(--muted)">Blog • Rezepte • Shop</div>
+      </div>
+    </a>
 
-      <nav>
-        <a href="#posts">Beiträge</a>
-        <a href="#about">Über</a>
-        <a href="#recipes">Rezepte</a>
-        <a href="#shop">Shop</a>
-        <a class="cta" href="#subscribe">Newsletter</a>
-      </nav>
+    <nav id="topNav">
+      <a href="#home">Home</a>
+      <a href="#posts" id="navPosts">Beiträge</a>
+      <a href="#recipes" id="navRecipes">Rezepte</a>
+      <a href="#shop" id="navShop">Shop</a>
+      <a href="#admin" id="navAdmin">Admin</a>
+      <a class="cta" href="#" id="cartBtn">Warenkorb (<span id="cartCount">0</span>)</a>
+    </nav>
 
-      <button class="hamburger" aria-label="Öffne Menü" id="hamb">
-        ☰
-      </button>
-    </header>
+    <button class="hamburger" id="hamb" aria-label="Menu">☰</button>
+  </header>
 
-    <!-- HERO -->
-    <main id="top">
-      <section class="hero">
-        <div class="hero-card">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-            <div>
-              <div style="font-size:13px;color:var(--muted);font-weight:700">NEU • FEATURE</div>
-              <h1>Kaffeekosmos — Geschichten aus der Bohne</h1>
-              <p class="lead">Kurzgeschichten, Zubereitungs-Guides, kleine Produktideen — alles, um deine Liebe zum Kaffee zu vertiefen.</p>
-              <div class="hero-meta">
-                <div class="pill">Barista-Tipps</div>
-                <div class="pill">Rezepte</div>
-                <div class="pill">Shop-Teaser</div>
-              </div>
-            </div>
-
-            <div style="font-size:12px;color:var(--muted);text-align:right">
-              <div style="font-weight:700">PJ</div>
-              <div>Hobby-Barista &amp; Autor</div>
-            </div>
-          </div>
-
-          <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
-            <a class="btn btn-outline" href="#posts">Zu den Beiträgen</a>
-            <a class="btn" style="background:var(--accent);color:white" href="#recipes">Direkt Rezepte</a>
-            <a class="btn btn-outline" href="#shop">Shop-Ideen</a>
-          </div>
-        </div>
-
-        <div class="preview" aria-hidden="true">
-          <div class="img" style="background-image:url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1400&q=80')"></div>
-          <div class="meta">
-            <strong>Featured</strong>
-            <div class="muted" style="font-size:14px;margin-top:4px">Die einfache Anleitung für perfekten Espresso zuhause — Schritt für Schritt.</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- POSTS GRID -->
-      <section id="posts" style="margin-top:6px">
-        <div style="display:flex;justify-content:space-between;align-items:end;gap:12px">
+  <!-- HERO -->
+  <main id="home">
+    <section class="hero">
+      <div class="hero-card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
           <div>
-            <h2 style="margin:0">Letzte Beiträge</h2>
-            <div class="muted">Aktuelle Artikel, Tests &amp; Rezepte</div>
+            <div style="font-size:12px;color:var(--muted);font-weight:700">FEATURE</div>
+            <h1 style="margin:6px 0 4px">Kaffeekosmos — Der Blog für Hobby-Baristas</h1>
+            <p class="lead">Rezepte, Produktempfehlungen, einfache Shop-Simulation und ein Admin-Panel für eigene Beiträge — alles lokal und sofort nutzbar.</p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap">
+              <a class="btn btn-outline" href="#posts">Zu Beiträgen</a>
+              <a class="btn" style="background:var(--accent);color:white" href="#shop">Shop</a>
+            </div>
           </div>
+          <div style="text-align:right;font-size:12px;color:var(--muted)">
+            <div style="font-weight:700">PJ</div>
+            <div>Hobby-Barista & Autor</div>
+          </div>
+        </div>
+
+        <div style="margin-top:16px" class="admin-note">
+          Tipp: Admin öffnen → klick auf „Admin“ → Passwort eingeben, um Artikel & Produkte lokal hinzuzufügen.
+        </div>
+      </div>
+
+      <div class="preview" aria-hidden="true">
+        <div class="img" style="background-image:url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1400&q=80')"></div>
+        <div class="meta">
+          <strong>Featured</strong>
+          <div class="muted" style="font-size:14px;margin-top:6px">Perfekter Espresso zuhause — ein kompakter Guide</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LATEST POSTS -->
+    <section id="posts" style="margin-top:14px">
+      <div style="display:flex;justify-content:space-between;align-items:end">
+        <div>
+          <h2 style="margin:0">Letzte Beiträge</h2>
+          <div class="muted">Neuigkeiten, Recherche & Guides</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <input id="search" placeholder="Stichwort suchen (z. B. Espresso)" style="padding:8px;border-radius:10px;border:1px solid #eee">
+          <button id="searchBtn" class="btn">Suchen</button>
+        </div>
+      </div>
+
+      <div class="grid" id="postsGrid">
+        <!-- Dynamisch befüllt -->
+      </div>
+    </section>
+
+    <!-- RECIPES + SIDEBAR -->
+    <section id="recipes" class="two-col">
+      <div>
+        <h3>Rezepte</h3>
+        <p class="muted">Einige meiner Lieblingsrezepte — klick auf ein Rezept, um die Detailseite zu öffnen.</p>
+        <div class="grid" id="recipesGrid">
+          <!-- Dynamisch befüllt -->
+        </div>
+      </div>
+
+      <aside>
+        <h4>Beliebte Tags</h4>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">
+          <div class="tag">Espresso</div><div class="tag">Cold Brew</div><div class="tag">Rezepte</div><div class="tag">Tasting</div><div class="tag">Zubehör</div>
+        </div>
+
+        <h4 style="margin-top:16px">Mini-Shop-Vorschau</h4>
+        <div style="display:grid;gap:10px;margin-top:10px">
           <div style="display:flex;gap:10px;align-items:center">
-            <input id="search" placeholder="Stichwort suchen (z. B. Espresso)" style="padding:8px;border-radius:10px;border:1px solid #e6e2df">
-            <button id="searchBtn" class="btn">Suchen</button>
-          </div>
-        </div>
-
-        <div class="grid" style="margin-top:14px">
-          <!-- Card 1 -->
-          <article class="card" data-title="Perfekter Espresso">
-            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1510626176961-4b57d4fbad03?auto=format&fit=crop&w=1200&q=80')"></div>
-            <div class="content">
-              <div class="meta-row">
-                <div style="font-weight:700">Perfekter Espresso zuhause</div>
-                <div class="muted">12.07.2025</div>
-              </div>
-              <div style="color:var(--muted);font-size:0.98rem">
-                Ein kompakter Guide, wie du mit einfacher Technik konstant guten Espresso extrahierst — Tipps zu Mahlgrad, Dose & Tamper.
-              </div>
-              <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center">
-                <div class="tags"><span class="tag">Espresso</span><span class="tag">Technik</span></div>
-                <button class="btn" data-post="1">Read →</button>
-              </div>
+            <img src="https://images.unsplash.com/photo-1510626176961-4b57d4fbad03?auto=format&fit=crop&w=300&q=60" style="width:68px;height:56px;object-fit:cover;border-radius:8px">
+            <div>
+              <div style="font-weight:700">Nimbus Handmühle</div>
+              <div class="muted" style="font-size:13px">€69.00</div>
             </div>
-          </article>
-
-          <!-- Card 2 -->
-          <article class="card" data-title="Cold Brew Einstieg">
-            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=1200&q=80')"></div>
-            <div class="content">
-              <div class="meta-row">
-                <div style="font-weight:700">Cold Brew: Sanft &amp; aromatisch</div>
-                <div class="muted">02.06.2025</div>
-              </div>
-              <div style="color:var(--muted);font-size:0.98rem">
-                Cold Brew selber machen — das Rezept für eine milde, vollmundige Kaffeebasis für warme Tage (und Cocktails).
-              </div>
-              <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center">
-                <div class="tags"><span class="tag">Cold Brew</span><span class="tag">Rezept</span></div>
-                <button class="btn" data-post="2">Read →</button>
-              </div>
-            </div>
-          </article>
-
-          <!-- Card 3 -->
-          <article class="card" data-title="Bohnentest Single Origin">
-            <div class="thumb" style="background-image:url('https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=1200&q=80')"></div>
-            <div class="content">
-              <div class="meta-row">
-                <div style="font-weight:700">Single Origin: Äthiopien Tasting</div>
-                <div class="muted">18.05.2025</div>
-              </div>
-              <div style="color:var(--muted);font-size:0.98rem">
-                Verkostungsnotizen zu einer äthiopischen Bohne — florale Noten, Citrus, und wie du diese Aromen herausarbeitest.
-              </div>
-              <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center">
-                <div class="tags"><span class="tag">Tasting</span><span class="tag">Single Origin</span></div>
-                <button class="btn" data-post="3">Read →</button>
-              </div>
-            </div>
-          </article>
-
-        </div>
-      </section>
-
-      <!-- Two column area: Recipes + Sidebar -->
-      <section id="recipes" class="two-col" style="margin-top:28px">
-        <div class="recipe">
-          <h3>Rezept: Cold Brew (Basis)</h3>
-          <p class="muted">Ein einfaches Rezept, das auch als Grundlage für Iced Coffee oder Cocktails dient.</p>
-          <ol style="margin-top:10px">
-            <li><strong>Zutaten:</strong> 100 g grob gemahlener Kaffee (20:1 Wasser Verhältnis), 1 L kaltes Wasser.</li>
-            <li><strong>Zubereitung:</strong> Kaffee in ein Gefäß geben, Wasser dazu, 12–18 Stunden bei Raumtemperatur ziehen lassen.</li>
-            <li><strong>Filtern:</strong> Mit feinem Sieb oder Kaffeefilter abseihen, kalt stellen.</li>
-            <li><strong>Serviervorschlag:</strong> 1 Teil Cold Brew + 2 Teile Wasser oder Milch, Eis, Zitrone oder Sirup nach Geschmack.</li>
-          </ol>
-
-          <h4 style="margin-top:16px">Warum es so gut funktioniert</h4>
-          <p class="muted">Die niedrige Extraktionstemperatur reduziert Bitterkeit und hebt fruchtige, schokoladige Noten hervor — ideal für lange Sommernachmittage.</p>
-
-          <div style="margin-top:14px;display:flex;gap:10px">
-            <a class="btn" href="#shop">Zubehör ansehen</a>
-            <a class="btn btn-outline" href="#posts">Mehr Beiträge</a>
-          </div>
-        </div>
-
-        <aside>
-          <h4>Beliebte Tags</h4>
-          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">
-            <div class="tag">Espresso</div><div class="tag">Filter</div><div class="tag">Cold Brew</div><div class="tag">Zubehör</div>
-            <div class="tag">Rezepte</div><div class="tag">Tasting</div>
           </div>
 
-          <h4 style="margin-top:18px">Mini-Shop-Teaser</h4>
-          <p class="muted">Kleine Produktideen, die ich selbst nutze — demnächst verfügbar im kleinen Shop.</p>
-          <ul style="margin-top:8px;color:var(--muted)">
-            <li>Handmühle „Nimbus“ – 699€</li>
-            <li>Espresso-Tamper – 29€</li>
-            <li>Reusable Filter Set – 19€</li>
-          </ul>
-        </aside>
-      </section>
-
-      <!-- Shop teaser -->
-      <section id="shop" style="margin-top:28px">
-        <div style="display:flex;gap:18px;align-items:stretch;flex-wrap:wrap">
-          <div style="flex:1;min-width:240px">
-            <h3>Shop & Ideen</h3>
-            <p class="muted">Noch in Planung — hier veröffentliche ich bald kleine Produkte, die ich empfehle.</p>
-            <a class="btn" href="#subscribe">Benachrichtigen</a>
-          </div>
-
-          <div style="flex:1;min-width:280px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
-            <div class="card" style="padding:12px">
-              <div style="height:120px;background-image:url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=80');background-size:cover;border-radius:8px"></div>
-              <div style="padding-top:10px;font-weight:700">Nimbus Handmühle</div>
-              <div class="muted" style="font-size:0.95rem">Kompakt, gleichmäßiger Mahlgrad, ideal für zuhause.</div>
-            </div>
-
-            <div class="card" style="padding:12px">
-              <div style="height:120px;background-image:url('https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=800&q=80');background-size:cover;border-radius:8px"></div>
-              <div style="padding-top:10px;font-weight:700">Starter Kit Zubehör</div>
-              <div class="muted" style="font-size:0.95rem">Tamper, Löffel, Reinigungsset — die Basics für gute Extraktion.</div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=300&q=60" style="width:68px;height:56px;object-fit:cover;border-radius:8px">
+            <div>
+              <div style="font-weight:700">Starter Kit</div>
+              <div class="muted" style="font-size:13px">€29.00</div>
             </div>
           </div>
         </div>
-      </section>
+      </aside>
+    </section>
 
-      <!-- Subscribe -->
-      <section id="subscribe" style="margin-top:28px">
-        <div style="background:linear-gradient(180deg, rgba(235,224,214,0.6), rgba(255,255,255,0.6));padding:18px;border-radius:12px;box-shadow:var(--shadow);display:flex;gap:16px;align-items:center;flex-wrap:wrap">
-          <div style="flex:1;min-width:220px">
-            <h3>Newsletter</h3>
-            <div class="muted">Einmal im Monat: neue Rezepte, Tests und Produktideen.</div>
-          </div>
-          <form id="subscribeForm" style="flex:1;min-width:260px;display:flex;gap:8px" onsubmit="return false">
-            <input id="email" type="email" placeholder="Deine E-Mail" required>
-            <button id="subBtn" class="btn" style="background:var(--accent);color:white" type="submit">Anmelden</button>
-          </form>
+    <!-- SHOP -->
+    <section id="shop" style="margin-top:18px">
+      <div style="display:flex;justify-content:space-between;align-items:end">
+        <div>
+          <h2 style="margin:0">Shop</h2>
+          <div class="muted">Produktübersicht (Preise in €) — Warenkorb ist eine Simulation</div>
         </div>
-        <div id="subscribeMsg" style="margin-top:10px;color:var(--muted);display:none"></div>
-      </section>
+        <div style="display:flex;gap:10px;align-items:center">
+          <button id="viewCartTop" class="btn btn-outline">Warenkorb öffnen</button>
+          <button id="clearStorageBtn" class="btn btn-outline">LocalStorage löschen</button>
+        </div>
+      </div>
 
-      <footer>
-        © 2025 Kaffeekosmos — made with ☕ · Designed for hobby-baristas
-      </footer>
-    </main>
-  </div>
+      <div class="shop-grid" id="shopGrid" style="margin-top:12px">
+        <!-- Dynamisch befüllt -->
+      </div>
+    </section>
 
-  <!-- Modal for post details -->
-  <div id="modalWrap" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="modal" role="document">
-      <button class="close" id="modalClose" aria-label="Schließen">✕</button>
-      <div id="modalContent"></div>
+    <!-- CART PANEL -->
+    <div class="cart-panel" id="cartPanel" aria-hidden="true">
+      <div class="cart-head">
+        <div style="font-weight:800">Warenkorb</div>
+        <div><button id="closeCart" class="btn btn-outline">Schließen</button></div>
+      </div>
+      <div class="cart-list" id="cartList">
+        <!-- items -->
+      </div>
+      <div class="cart-foot">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="muted">Zwischensumme</div>
+          <div id="cartSubtotal">€0.00</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="muted">Versand (geschätzt)</div>
+          <div id="cartShipping">€3.90</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:1.05rem">
+          <div>Gesamt</div>
+          <div id="cartTotal">€0.00</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button id="checkoutBtn" class="btn" style="background:var(--accent);color:white">Checkout (Simulation)</button>
+          <button id="clearCart" class="btn btn-outline">Leeren</button>
+        </div>
+      </div>
     </div>
-  </div>
 
+    <!-- MODAL for post/recipe/shop details -->
+    <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-hidden="true">
+      <div class="modal" role="document">
+        <button class="close" id="modalClose">✕</button>
+        <div id="modalContent"></div>
+      </div>
+    </div>
+
+    <!-- ADMIN -->
+    <section id="admin" style="margin-top:18px">
+      <h2>Admin</h2>
+      <p class="muted">Über dieses Panel kannst du lokal Beiträge oder Produkte hinzufügen. Die Inhalte werden im Browser (localStorage) gespeichert.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button id="openAdmin" class="btn">Admin öffnen</button>
+        <button id="exportData" class="btn btn-outline">Exportiere lokale Inhalte (JSON)</button>
+        <button id="importData" class="btn btn-outline">Importiere JSON (Prompt)</button>
+      </div>
+
+      <div style="margin-top:10px;font-size:13px;color:var(--muted)">
+        Hinweis: Admin ist nur lokal. Möchtest du die Inhalte dauerhaft auf GitHub haben, kannst du den JSON-Export kopieren und in dein Repo als Datei speichern.
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    © 2025 Kaffeekosmos — made with ☕ · Lokal gespeicherte Demo • Warenkorb-Simulation
+  </footer>
+</div>
+
+<!-- Modal & Cart and app logic -->
 <script>
-  // Basic JS interactions: hamburger menu, modal for posts, search, subscribe feedback, smooth scroll
+/* ===============================
+   INITIAL DATA (prefilled)
+   - products[]: Beispielprodukte (Preise in Euro)
+   - posts[]: Blogartikel inkl. recherchierten Inhalten
+   - recipes[]: Rezepte mit Schritten
+   All images via Unsplash (stabile URLs)
+   =============================== */
 
-  // Smooth scroll for same-page anchors
-  document.querySelectorAll('a[href^="#"]').forEach(a=>{
-    a.addEventListener('click', function(e){
-      const href = this.getAttribute('href');
-      if(href.length>1){
-        e.preventDefault();
-        const el = document.querySelector(href);
-        if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
-      }
-    });
+const defaultProducts = [
+  { id: 'p1', title:'Nimbus Handmühle', price:69.00, img:'https://images.unsplash.com/photo-1510626176961-4b57d4fbad03?auto=format&fit=crop&w=1200&q=80', desc:'Kompakte Handmühle mit gleichmäßigem Mahlgrad. Ideal für Espresso & Filter.' },
+  { id: 'p2', title:'Espresso Bohnen – Blend', price:12.50, img:'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=80', desc:'250g dunkel gerösteter Espresso mit Noten von Schokolade und Karamell.' },
+  { id: 'p3', title:'Reusable Filter Set', price:19.00, img:'https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=1200&q=80', desc:'Mehrwegfilter für V60 und andere Handfilter.' },
+  { id: 'p4', title:'Tamper pro', price:29.00, img:'https://images.unsplash.com/photo-1543449657-7d7a8b6e9b8b?auto=format&fit=crop&w=1200&q=80', desc:'Stabiler Tamper für exakten Druck beim Tampen.' },
+  { id: 'p5', title:'Cold Brew Set', price:24.50, img:'https://images.unsplash.com/photo-1506243361269-9f17f8b9b2f7?auto=format&fit=crop&w=1200&q=80', desc:'Alles, was du für Cold Brew brauchst: Filter, Behälter & Anleitung.' },
+  { id: 'p6', title:'Barista Messlöffel', price:9.90, img:'https://images.unsplash.com/photo-1523301343968-9f8a6f8c3a2b?auto=format&fit=crop&w=1200&q=80', desc:'Präzises Messlöffel-Set für Kaffee & Rezepte.' }
+];
+
+const defaultPosts = [
+  {
+    id:'b1',
+    title:'Perfekter Espresso zuhause',
+    date:'12.07.2025',
+    excerpt:'Ein kompakter Leitfaden: Bohne, Mahlgrad, Dosierung, Tamper und Extraktionszeit.',
+    img:'https://images.unsplash.com/photo-1510626176961-4b57d4fbad03?auto=format&fit=crop&w=1200&q=80',
+    content: `<p><strong>Zusammenfassung:</strong> In diesem Beitrag erkläre ich die wichtigsten Stellschrauben für guten Espresso: Bohne, Mahlgrad, Dosierung, Tamper und Extraktionszeit.</p>
+    <h4>1. Bohne & Frische</h4>
+    <p>Frische ist entscheidend. Kaufe kleine Mengen (250g) und verwende die Bohnen innerhalb von 3–4 Wochen nach Röstung.</p>
+    <h4>2. Mahlgrad</h4>
+    <p>Feiner Mahlgrad für Espresso — justiere in kleinen Schritten. Zu fein → Überextraktion (bitter), zu grob → Unterextraktion (sauer).</p>
+    <h4>3. Tamper & Dose</h4>
+    <p>Gleichmäßiges Tampen und konstante Dosis (z. B. 18 g) sorgen für gleichmäßige Extraktion.</p>`
+  },
+  {
+    id:'b2',
+    title:'Cold Brew: Sanft & aromatisch',
+    date:'02.06.2025',
+    excerpt:'Cold Brew selber machen — das Rezept für eine milde, vollmundige Kaffeebasis.',
+    img:'https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=1200&q=80',
+    content:`<p>Cold Brew ist super einfach und extrem verzeihend. Grob mahlen, lange Kontaktzeit, und du bekommst eine tolle Basis für viele Drinks.</p>
+    <h4>Rezept</h4><p>100 g grob gemahlener Kaffee, 1 L kaltes Wasser, 12–18 Stunden ziehen lassen, abfiltern.</p>`
+  },
+  {
+    id:'b3',
+    title:'Innovative Rösterei: CoffeeCircle (Beispiel)',
+    date:'11.04.2025',
+    excerpt:'Ein Röster mit Fokus auf Direktimport & sozialem Impact — warum er spannend ist.',
+    img:'https://images.unsplash.com/photo-1504198453319-5ce911bafcde?auto=format&fit=crop&w=1200&q=80',
+    content:`<p>Als Beispiel für eine innovative Rösterei sei <strong>CoffeeCircle</strong> genannt: Direktimporte, Transparenz und Rückinvestition in Ursprungsländer zeichnen sie aus. Viele Röstereien arbeiten inzwischen mit ähnlichen Modellen.</p>`
+  },
+  {
+    id:'b4',
+    title:'Optimales Kaffee-Wasser-Verhältnis',
+    date:'01.03.2025',
+    excerpt:'Brew Ratio: Wie viel Kaffee auf wie viel Wasser für Filter & Espresso?',
+    img:'https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=1200&q=80',
+    content:`<p>Für Filterkaffee empfiehlt die Specialty Coffee Association ca. 1:16–1:18 (Kaffee:Wasser). Das entspricht z. B. 60 g Kaffee auf 1 Liter Wasser bei 1:16. Für Espresso gelten andere Verhältnisse (z. B. 1:2).</p>`
+  }
+];
+
+const defaultRecipes = [
+  { id:'r1', title:'Cold Brew (Basis)', img:'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=80', excerpt:'Grobes Mahlen + 12–18 Stunden ziehen lassen.', steps:[
+    '100 g grob gemahlener Kaffee', '1 L kaltes Wasser', '12–18 Stunden ziehen lassen', 'Filtern und kalt servieren'
+  ]},
+  { id:'r2', title:'Espresso Topping Brownie', img:'https://images.unsplash.com/photo-1497534446932-c925b458314e?auto=format&fit=crop&w=1200&q=80', excerpt:'Schokoladiger Kuchen mit Shot Espresso', steps:[
+    'Teig zubereiten', 'Espresso in Teig einrühren', 'Backen 25–30 min'
+  ]}
+];
+
+/* ==============
+   Persistence: try to load from localStorage; if empty, use defaults
+   ============== */
+function loadOrDefault(key, def){
+  try{
+    const raw = localStorage.getItem(key);
+    if(raw) return JSON.parse(raw);
+    localStorage.setItem(key, JSON.stringify(def));
+    return def;
+  } catch(e){
+    console.error('loadOrDefault err', e); localStorage.setItem(key, JSON.stringify(def)); return def;
+  }
+}
+
+let products = loadOrDefault('kk_products', defaultProducts);
+let posts = loadOrDefault('kk_posts', defaultPosts);
+let recipes = loadOrDefault('kk_recipes', defaultRecipes);
+let cart = loadOrDefault('kk_cart', []);
+
+/* ======= Render functions ======= */
+function €(v){ return '€' + Number(v).toFixed(2); }
+
+/* POSTS */
+function renderPosts(){
+  const grid = document.getElementById('postsGrid'); grid.innerHTML='';
+  posts.slice().reverse().forEach(p=>{
+    const el = document.createElement('article'); el.className='card';
+    el.innerHTML = `
+      <div class="thumb" style="background-image:url('${p.img}')"></div>
+      <div class="content">
+        <div class="meta-row"><div style="font-weight:700">${p.title}</div><div class="muted">${p.date}</div></div>
+        <div style="color:var(--muted)">${p.excerpt}</div>
+        <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center">
+          <div class="tags"><div class="tag">Blog</div></div>
+          <button class="btn" data-id="${p.id}" onclick="openPost('${p.id}')">Lesen →</button>
+        </div>
+      </div>`;
+    grid.appendChild(el);
   });
+}
 
-  // Mobile hamburger: show a simple prompt menu (keeps things dependency-free)
-  const hamb = document.getElementById('hamb');
-  hamb && hamb.addEventListener('click', ()=>{
-    const menu = [
-      {t:'Beiträge',h:'#posts'},
-      {t:'Über',h:'#about'},
-      {t:'Rezepte',h:'#recipes'},
-      {t:'Shop',h:'#shop'},
-      {t:'Newsletter',h:'#subscribe'}
-    ];
-    const choice = prompt("Menü öffnen:\n1 Beiträge\n2 Rezepte\n3 Shop\n4 Newsletter\n(Nummer eingeben)","1");
-    const idx = parseInt(choice,10);
-    if(!isNaN(idx) && idx>=1 && idx<=5){
-      location.href = menu[idx-1].h;
-    }
+/* RECIPES */
+function renderRecipes(){
+  const grid = document.getElementById('recipesGrid'); grid.innerHTML='';
+  recipes.slice().reverse().forEach(r=>{
+    const el = document.createElement('article'); el.className='card';
+    el.innerHTML = `
+      <div class="thumb" style="background-image:url('${r.img}')"></div>
+      <div class="content">
+        <div style="font-weight:700">${r.title}</div>
+        <div class="muted">${r.excerpt}</div>
+        <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center">
+          <div class="tags"><div class="tag">Rezept</div></div>
+          <button class="btn" onclick="openRecipe('${r.id}')">Ansehen →</button>
+        </div>
+      </div>`;
+    grid.appendChild(el);
   });
+}
 
-  // Post content store (simple sample content). In a real site this comes from CMS/API.
-  const posts = {
-    1: {
-      title: "Perfekter Espresso zuhause",
-      date: "12.07.2025",
-      author: "PJ",
-      content: `<p><strong>Zusammenfassung:</strong> In diesem Beitrag erkläre ich die wichtigsten Stellschrauben für guten Espresso: Bohne, Mahlgrad, Dosierung, Tamper und Extraktionszeit.</p>
-      <h4>1. Bohne & Frische</h4>
-      <p>Frische ist entscheidend. Kaufe kleine Mengen (250g) und verwende die Bohnen innerhalb von 3-4 Wochen nach Röstung.</p>
-      <h4>2. Mahlgrad</h4>
-      <p>Feiner Mahlgrad für Espresso — justiere in kleinen Schritten. Zu fein → Überextraktion (bitter), zu grob → unterextrahiert (sauer).</p>
-      <h4>3. Tamper & Dose</h4>
-      <p>Gleichmäßiges Tampen und konstante Dosis (z. B. 18g) sorgen für gleichmäßige Extraktion.</p>
-      <p class="muted">Viel Spaß beim Experimentieren — notiere deine Einstellungen und passe schrittweise an.</p>`
-    },
-    2: {
-      title: "Cold Brew: Sanft & aromatisch",
-      date: "02.06.2025",
-      author: "PJ",
-      content: `<p>Cold Brew ist super einfach und extrem verzeihend. Grob mahlen, lange Kontaktzeit, und du bekommst eine tolle Basis für viele Drinks.</p>
-      <h4>Rezept</h4>
-      <p>100 g grob gemahlener Kaffee, 1 L kaltes Wasser, 12-18 Stunden ziehen lassen, abfiltern.</p>
-      <h4>Varianten</h4>
-      <p>Verdünnung, Gewürze (Zimt, Kardamom) oder Sirups verändern das Profil.</p>`
-    },
-    3: {
-      title: "Single Origin: Äthiopien Tasting",
-      date: "18.05.2025",
-      author: "PJ",
-      content: `<p>Diese Bohne zeigt florale und fruchtige Noten — ideal für Filter oder leichte Espressi. Achte auf die Wassertemperatur (92°C) beim Brühen.</p>
-      <h4>Tasting Notes</h4><ul><li>Floral</li><li>Lemon / Citrus</li><li>Jasmin</li></ul>`
-    }
+/* SHOP */
+function renderShop(){
+  const grid = document.getElementById('shopGrid'); grid.innerHTML='';
+  products.forEach(p=>{
+    const el = document.createElement('div'); el.className='prod-card';
+    el.innerHTML = `
+      <div class="prod-thumb" style="background-image:url('${p.img}')"></div>
+      <div class="prod-body">
+        <div style="font-weight:800">${p.title}</div>
+        <div class="muted" style="font-size:0.95rem">${p.desc}</div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="price">${€(p.price)}</div>
+          <div>
+            <button class="btn btn-outline" onclick="openProduct('${p.id}')">Details</button>
+            <button class="btn" onclick="addToCart('${p.id}',1)" style="background:var(--accent);color:#fff">In den Warenkorb</button>
+          </div>
+        </div>
+      </div>`;
+    grid.appendChild(el);
+  });
+}
+
+/* CART RENDER */
+function saveCart(){ localStorage.setItem('kk_cart', JSON.stringify(cart)); updateCartCount(); renderCart(); }
+function updateCartCount(){ document.getElementById('cartCount').textContent = cart.reduce((s,i)=>s+i.qty,0); }
+function calculateSubtotal(){ return cart.reduce((s,i)=>s + (i.price * i.qty), 0); }
+function renderCart(){
+  const list = document.getElementById('cartList'); list.innerHTML='';
+  if(cart.length === 0) list.innerHTML = '<div class="muted" style="padding:12px">Dein Warenkorb ist leer.</div>';
+  cart.forEach(item=>{
+    const row = document.createElement('div'); row.className='cart-row';
+    row.innerHTML = `
+      <img src="${item.img}" alt="${item.title}">
+      <div style="flex:1">
+        <div style="font-weight:700">${item.title}</div>
+        <div class="muted">${€(item.price)} · Menge: 
+          <input type="number" min="1" value="${item.qty}" style="width:62px" onchange="changeQty('${item.id}',this.value)">
+        </div>
+      </div>
+      <div style="font-weight:800">${€(item.price*item.qty)}</div>
+      <div><button class="btn btn-outline" onclick="removeFromCart('${item.id}')">✕</button></div>`;
+    list.appendChild(row);
+  });
+  const subtotal = calculateSubtotal();
+  document.getElementById('cartSubtotal').textContent = €(subtotal);
+  const shipping = subtotal>50 ? 0 : 3.9;
+  document.getElementById('cartShipping').textContent = €(shipping);
+  document.getElementById('cartTotal').textContent = €(subtotal + shipping);
+}
+
+/* CART ACTIONS */
+function addToCart(pid, qty=1){
+  const p = products.find(x=>x.id===pid); if(!p) return alert('Produkt nicht gefunden');
+  const existing = cart.find(c=>c.id===pid);
+  if(existing){ existing.qty += qty; }
+  else{ cart.push({ id:p.id, title:p.title, price:p.price, img:p.img, qty: qty }); }
+  saveCart();
+  openCart();
+}
+
+function changeQty(id, val){
+  const q = Math.max(1, parseInt(val)||1);
+  const item = cart.find(c=>c.id===id);
+  if(item){ item.qty = q; saveCart(); }
+}
+
+function removeFromCart(id){
+  cart = cart.filter(c=>c.id!==id); saveCart();
+}
+
+function clearCart(){
+  cart = []; saveCart();
+}
+
+/* CART UI open/close */
+function openCart(){ document.getElementById('cartPanel').style.display = 'block'; document.getElementById('cartPanel').setAttribute('aria-hidden','false'); }
+function closeCart(){ document.getElementById('cartPanel').style.display = 'none'; document.getElementById('cartPanel').setAttribute('aria-hidden','true'); }
+
+/* CHECKOUT Simulation */
+function simulateCheckout(){
+  if(cart.length===0) return alert('Warenkorb ist leer.');
+  // create pseudo-order
+  const order = {
+    id: 'ORD'+Date.now(),
+    date: new Date().toISOString(),
+    items: cart,
+    subtotal: calculateSubtotal(),
+    shipping: calculateSubtotal()>50?0:3.9,
+    total: calculateSubtotal() + (calculateSubtotal()>50?0:3.9)
   };
+  // store in localOrders
+  const orders = JSON.parse(localStorage.getItem('kk_orders') || '[]');
+  orders.push(order);
+  localStorage.setItem('kk_orders', JSON.stringify(orders));
+  // simulate confirmation and clear cart
+  alert('Vielen Dank! Deine Bestellung (Simulation) wurde erstellt: ' + order.id + '\\n(Die Bestellung ist lokal gespeichert, keine Zahlung.)');
+  clearCart();
+}
 
-  // Open modal when Read buttons clicked
-  document.querySelectorAll('button[data-post]').forEach(btn=>{
-    btn.addEventListener('click', ()=>{
-      const id = btn.getAttribute('data-post');
-      openPost(id);
-    });
-  });
+/* MODALS for posts/recipes/products */
+function openPost(id){
+  const p = posts.find(x=>x.id===id); if(!p) return;
+  showModal(`<h2>${p.title}</h2><div class="muted">${p.date}</div><img src="${p.img}" style="width:100%;margin-top:10px;border-radius:8px"/><div style="margin-top:10px">${p.content}</div>`);
+}
+function openRecipe(id){
+  const r = recipes.find(x=>x.id===id); if(!r) return;
+  showModal(`<h2>${r.title}</h2><img src="${r.img}" style="width:100%;margin-top:10px;border-radius:8px"/><h4>Zutaten & Schritte</h4><ol>${r.steps.map(s=>'<li>'+s+'</li>').join('')}</ol>`);
+}
+function openProduct(id){
+  const p = products.find(x=>x.id===id); if(!p) return;
+  showModal(`<h2>${p.title}</h2><img src="${p.img}" style="width:100%;margin-top:10px;border-radius:8px"/><p class="muted">${p.desc}</p><div style="font-weight:800">${€(p.price)}</div><div style="margin-top:10px;display:flex;gap:8px"><button class="btn" onclick="addToCart('${p.id}',1);closeModal()">In den Warenkorb</button><button class="btn btn-outline" onclick="closeModal()">Schließen</button></div>`);
+}
 
-  const modalWrap = document.getElementById('modalWrap');
-  const modalContent = document.getElementById('modalContent');
-  const modalClose = document.getElementById('modalClose');
+/* modal helpers */
+function showModal(html){
+  const back = document.getElementById('modalBackdrop');
+  document.getElementById('modalContent').innerHTML = html;
+  back.style.display = 'flex'; back.setAttribute('aria-hidden','false');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(){ document.getElementById('modalBackdrop').style.display='none'; document.getElementById('modalBackdrop').setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
 
-  function openPost(id){
-    const p = posts[id];
-    if(!p) return;
-    modalContent.innerHTML = `<h2>${p.title}</h2><div class="muted">${p.author} · ${p.date}</div><div style="margin-top:10px">${p.content}</div>`;
-    modalWrap.style.display = 'flex';
-    modalWrap.setAttribute('aria-hidden','false');
-    document.body.style.overflow = 'hidden';
+/* ========== Admin Panel (local) ========== */
+/* simple password prompt (not secure — only local convenience) */
+const ADMIN_PASS = 'kaffeepj'; // Du kannst das ändern im Code
+
+function openAdminPrompt(){
+  const pw = prompt('Admin Passwort eingeben:');
+  if(pw === ADMIN_PASS){
+    showAdminUI();
+  } else {
+    alert('Falsches Passwort oder abgebrochen.');
   }
-  modalClose && modalClose.addEventListener('click', closeModal);
-  modalWrap && modalWrap.addEventListener('click', (e)=>{
-    if(e.target === modalWrap) closeModal();
-  });
-  function closeModal(){
-    modalWrap.style.display = 'none';
-    modalWrap.setAttribute('aria-hidden','true');
-    document.body.style.overflow = '';
-  }
+}
 
-  // Simple search by data-title (client-side)
-  document.getElementById('searchBtn').addEventListener('click', ()=>{
-    const q = document.getElementById('search').value.trim().toLowerCase();
-    const cards = document.querySelectorAll('.card');
-    if(!q){ cards.forEach(c=>c.style.display='flex'); return; }
-    cards.forEach(c=>{
-      const title = (c.getAttribute('data-title')||'').toLowerCase();
-      if(title.includes(q)) c.style.display='flex'; else c.style.display='none';
-    });
-  });
+function showAdminUI(){
+  const html = `
+    <h2>Admin Panel</h2>
+    <p class="muted">Hier kannst du neue Blogbeiträge, Rezepte und Produkte lokal hinzufügen. Daten werden in localStorage gespeichert.</p>
+    <hr>
+    <h3>Neuen Blogbeitrag anlegen</h3>
+    <input id="adm_title" placeholder="Titel" style="width:100%;padding:8px;margin-top:6px"/><br>
+    <input id="adm_date" placeholder="Datum (z.B. 01.01.2025)" style="width:100%;padding:8px;margin-top:6px"/><br>
+    <input id="adm_img" placeholder="Bild-URL" style="width:100%;padding:8px;margin-top:6px"/><br>
+    <textarea id="adm_excerpt" placeholder="Kurztext" style="width:100%;padding:8px;margin-top:6px"></textarea><br>
+    <textarea id="adm_content" placeholder="HTML Inhalt" style="width:100%;height:140px;padding:8px;margin-top:6px"></textarea><br>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button class="btn" onclick="adminAddPost()">Beitrag speichern</button>
+      <button class="btn btn-outline" onclick="closeModal()">Abbrechen</button>
+    </div>
+    <hr>
+    <h3>Neues Produkt anlegen</h3>
+    <input id="adm_p_title" placeholder="Produkt Titel" style="width:100%;padding:8px;margin-top:6px"/><br>
+    <input id="adm_p_price" placeholder="Preis (z.B. 9.90)" style="width:100%;padding:8px;margin-top:6px"/><br>
+    <input id="adm_p_img" placeholder="Bild-URL" style="width:100%;padding:8px;margin-top:6px"/><br>
+    <textarea id="adm_p_desc" placeholder="Kurzbeschreibung" style="width:100%;padding:8px;margin-top:6px"></textarea><br>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button class="btn" onclick="adminAddProduct()">Produkt speichern</button>
+    </div>
+    <hr>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-outline" onclick="adminExport()">Exportiere JSON</button>
+      <button class="btn btn-outline" onclick="adminImportPrompt()">Importiere JSON</button>
+      <button class="btn btn-outline" onclick="adminClearAll()">Alles löschen (local)</button>
+    </div>
+  `;
+  showModal(html);
+}
 
-  // Subscribe form (fake): simple validation + localStorage store
-  const subscribeForm = document.getElementById('subscribeForm');
-  const emailInput = document.getElementById('email');
-  const subscribeMsg = document.getElementById('subscribeMsg');
-  subscribeForm.addEventListener('submit', ()=>{
-    const email = emailInput.value.trim();
-    if(!email || !email.includes('@')) {
-      subscribeMsg.style.display='block';
-      subscribeMsg.textContent = 'Bitte gib eine gültige E-Mail Adresse an.';
-      subscribeMsg.style.color = 'crimson';
-      return;
-    }
-    // fake save to localStorage (since no backend)
-    const list = JSON.parse(localStorage.getItem('kk_subs') || '[]');
-    if(list.includes(email)){
-      subscribeMsg.style.display='block';
-      subscribeMsg.textContent = 'Diese Adresse ist bereits angemeldet.';
-      subscribeMsg.style.color = 'var(--muted)';
-      return;
-    }
-    list.push(email);
-    localStorage.setItem('kk_subs', JSON.stringify(list));
-    subscribeMsg.style.display='block';
-    subscribeMsg.textContent = 'Danke! Du bist jetzt im Newsletter. (lokal gespeichert)';
-    subscribeMsg.style.color = 'green';
-    emailInput.value = '';
-  });
+/* admin actions */
+function adminAddPost(){
+  const title = document.getElementById('adm_title').value.trim();
+  if(!title) return alert('Titel eingeben');
+  const post = {
+    id: 'b'+Date.now(),
+    title, date: document.getElementById('adm_date').value || new Date().toLocaleDateString(),
+    excerpt: document.getElementById('adm_excerpt').value || '',
+    img: document.getElementById('adm_img').value || 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=80',
+    content: document.getElementById('adm_content').value || ''
+  };
+  posts.push(post); localStorage.setItem('kk_posts', JSON.stringify(posts));
+  renderPosts(); closeModal();
+  alert('Beitrag gespeichert (lokal).');
+}
 
-  // small accessibility: enter on search field triggers search
-  document.getElementById('search').addEventListener('keydown', (e)=>{
-    if(e.key === 'Enter'){ document.getElementById('searchBtn').click(); }
-  });
+function adminAddProduct(){
+  const title = document.getElementById('adm_p_title').value.trim();
+  const price = parseFloat(document.getElementById('adm_p_price').value) || 0;
+  if(!title || !price) return alert('Titel und Preis angeben');
+  const prod = {
+    id: 'p'+Date.now(),
+    title, price,
+    img: document.getElementById('adm_p_img').value || 'https://images.unsplash.com/photo-1510626176961-4b57d4fbad03?auto=format&fit=crop&w=1200&q=80',
+    desc: document.getElementById('adm_p_desc').value || ''
+  };
+  products.push(prod); localStorage.setItem('kk_products', JSON.stringify(products));
+  renderShop(); closeModal();
+  alert('Produkt gespeichert (lokal).');
+}
 
-  // Lazy load images using loading="lazy" is not possible for background images; optionally we could replace them with <img> tags if needed.
-  // For now images are remote backgrounds (Unsplash) — ensure internet connection.
+function adminExport(){
+  const data = { products, posts, recipes, cart, orders: JSON.parse(localStorage.getItem('kk_orders')||'[]') };
+  const txt = JSON.stringify(data, null, 2);
+  // display in modal for copy
+  showModal('<h3>Export (kopieren)</h3><pre style="white-space:pre-wrap;max-height:60vh;overflow:auto;background:#f7f5f3;padding:12px;border-radius:8px">'+txt+'</pre><div style="margin-top:10px"><button class="btn" onclick="closeModal()">Schließen</button></div>');
+}
+
+function adminImportPrompt(){
+  const raw = prompt('Füge JSON hier ein (kompletter Export) — überschreibt lokale Daten. Abbrechen = nichts tun.');
+  if(!raw) return;
+  try{
+    const data = JSON.parse(raw);
+    if(data.products) localStorage.setItem('kk_products', JSON.stringify(data.products));
+    if(data.posts) localStorage.setItem('kk_posts', JSON.stringify(data.posts));
+    if(data.recipes) localStorage.setItem('kk_recipes', JSON.stringify(data.recipes));
+    if(data.cart) localStorage.setItem('kk_cart', JSON.stringify(data.cart));
+    if(data.orders) localStorage.setItem('kk_orders', JSON.stringify(data.orders));
+    // reload in-memory
+    products = loadOrDefault('kk_products', defaultProducts);
+    posts = loadOrDefault('kk_posts', defaultPosts);
+    recipes = loadOrDefault('kk_recipes', defaultRecipes);
+    cart = loadOrDefault('kk_cart', []);
+    renderAll();
+    alert('Import erfolgreich.');
+    closeModal();
+  } catch(e){ alert('Fehler beim Parsen: ' + e.message); }
+}
+
+function adminClearAll(){
+  if(!confirm('Alle lokal gespeicherten Inhalte löschen? Diese Aktion ist nicht rückgängig.')) return;
+  localStorage.removeItem('kk_products'); localStorage.removeItem('kk_posts'); localStorage.removeItem('kk_recipes'); localStorage.removeItem('kk_cart'); localStorage.removeItem('kk_orders');
+  products = loadOrDefault('kk_products', defaultProducts);
+  posts = loadOrDefault('kk_posts', defaultPosts);
+  recipes = loadOrDefault('kk_recipes', defaultRecipes);
+  cart = loadOrDefault('kk_cart', []);
+  renderAll(); alert('LocalStorage zurückgesetzt.');
+}
+
+/* ========== Search ========== */
+document.getElementById('searchBtn').addEventListener('click', ()=>{
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  const grid = document.getElementById('postsGrid'); grid.innerHTML='';
+  const results = posts.filter(p => (p.title+p.excerpt).toLowerCase().includes(q));
+  if(results.length===0) grid.innerHTML='<div class="muted">Keine Beiträge gefunden.</div>';
+  results.forEach(p=>{
+    const el = document.createElement('article'); el.className='card';
+    el.innerHTML = `<div class="thumb" style="background-image:url('${p.img}')"></div>
+      <div class="content">
+        <div class="meta-row"><div style="font-weight:700">${p.title}</div><div class="muted">${p.date}</div></div>
+        <div class="muted">${p.excerpt}</div>
+        <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center"><div class="tags"><div class="tag">Blog</div></div><button class="btn" onclick="openPost('${p.id}')">Lesen →</button></div>
+      </div>`;
+    grid.appendChild(el);
+  });
+});
+
+/* ========== Initialization & Events ========== */
+function renderAll(){
+  renderPosts(); renderRecipes(); renderShop(); renderCart(); updateCartCount();
+}
+
+document.getElementById('brandLink').addEventListener('click', (e)=>{ /* allow anchor */ });
+document.getElementById('viewCartTop').addEventListener('click', openCart);
+document.getElementById('cartBtn').addEventListener('click', (e)=>{ e.preventDefault(); openCart(); });
+document.getElementById('closeCart').addEventListener('click', closeCart);
+document.getElementById('clearCart').addEventListener('click', ()=>{ if(confirm('Warenkorb leeren?')) clearCart(); });
+document.getElementById('checkoutBtn').addEventListener('click', ()=>{ if(confirm('Checkout-Simulation durchführen?')) simulateCheckout(); });
+document.getElementById('clearStorageBtn').addEventListener('click', ()=>{ if(confirm('LocalStorage löschen (Posts/Produkte/Bestellungen)?')) { localStorage.clear(); location.reload(); }});
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('openAdmin').addEventListener('click', openAdminPrompt);
+document.getElementById('exportData').addEventListener('click', adminExport);
+document.getElementById('importData').addEventListener('click', ()=>{ const raw = prompt('Füge JSON ein:'); if(raw){ try{ const data = JSON.parse(raw); adminImportPrompt(); }catch(e){ alert('Ungültiges JSON'); } }});
+document.getElementById('hamb').addEventListener('click', ()=>{ alert('Mobile menu: benutze die Links oben (responsive).'); });
+
+document.getElementById('search').addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ document.getElementById('searchBtn').click(); } });
+
+/* initialize */
+renderAll();
+
+/* expose a few functions for inline onclick handlers */
+window.addToCart = addToCart;
+window.openPost = openPost;
+window.openRecipe = openRecipe;
+window.openProduct = openProduct;
+window.openAdminPrompt = openAdminPrompt;
+window.removeFromCart = removeFromCart;
+window.changeQty = changeQty;
+window.adminAddPost = adminAddPost;
+window.adminAddProduct = adminAddProduct;
+window.adminExport = adminExport;
+window.adminImportPrompt = adminImportPrompt;
+window.adminClearAll = adminClearAll;
+window.openCart = openCart;
+window.closeModal = closeModal;
+window.closeCart = closeCart;
 
 </script>
 </body>
