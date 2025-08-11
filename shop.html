@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shop — Kaffeekosmos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="index.html"><div class="logo">KK</div><div class="brand-txt"><strong>Kaffeekosmos</strong><span>Shop</span></div></a>
+      <nav class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="blog.html">Blog</a>
+        <a href="rezepte.html">Rezepte</a>
+        <a href="shop.html">Shop</a>
+        <a class="cart-link" href="#" id="openCartShop">Warenkorb (<span id="globalCartCountShop">0</span>)</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>Shop</h1>
+    <p class="muted">Produktübersicht — Preise in € — Warenkorb-Simulation per LocalStorage.</p>
+
+    <div id="productGrid" class="shop-grid">
+      <!-- wird per JS befüllt -->
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <div>© 2025 Kaffeekosmos · Lokal Demo</div>
+      <div class="muted">Bilder: Unsplash</div>
+    </div>
+  </footer>
+
+  <!-- global cart panel (same as index) -->
+  <div id="cartPanel" class="cart-panel" aria-hidden="true" style="display:none">
+    <div class="cart-head"><strong>Warenkorb</strong><button id="closeCart2" class="btn outline">Schließen</button></div>
+    <div id="cartList" class="cart-list"></div>
+    <div class="cart-foot">
+      <div style="display:flex;justify-content:space-between"><div class="muted">Zwischensumme</div><div id="cartSubtotal">€0.00</div></div>
+      <div style="display:flex;justify-content:space-between"><div class="muted">Versand</div><div id="cartShipping">€3.90</div></div>
+      <div style="display:flex;justify-content:space-between;font-weight:800;margin-top:8px"><div>Gesamt</div><div id="cartTotal">€0.00</div></div>
+      <div style="margin-top:10px"><button id="checkoutBtn" class="btn">Checkout (Simulation)</button> <button id="clearCart" class="btn outline">Leeren</button></div>
+    </div>
+  </div>
+
+  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/shop.js" defer></script>
+</body>
+</html>
